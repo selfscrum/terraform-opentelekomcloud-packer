@@ -31,3 +31,5 @@ override.tf.json
 
 README-for-now.md
 packer-*-result.log
+*secret.tfvars
+system.json

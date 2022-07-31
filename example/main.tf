@@ -1,7 +1,7 @@
-# create OTC image from local terraform as a sample for the packer module
+# create OTC image from local terraform as an example for the packer module
 
 locals {
-  system = jsondecode(file("../../../assets/system.json"))
+  system = jsondecode(file("../assets/system.json"))
 }
 
 module "packer" {
