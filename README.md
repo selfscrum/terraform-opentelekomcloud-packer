@@ -10,32 +10,34 @@ Using packer with OTC comes with some prerequisites.
 2. You need an EIP already registered within OTC.
 3. Your network needs to accept ssh acces, thus you will need a security group that allows inbound access via port 22.
 
-All of these artifacts are only needed for the time span that packer runs. Instead of doing all this work manually, this module manages everything for you.
+## Solution 
+
+![module-architecture](./assets/packer-otc.png)
+
+All of the created artifacts are only needed for the time span that packer runs. Instead of doing all this work manually, this module manages everything for you. We will use the default VPC and borrow the default security group to temporarily attach a port 22 access.
 
 (alternative idea for later: we could use terratest with calling packer from within the go test code)
 
-I use a JSON file to do all my project configurations. This is the file I refer to in the locals blocks.
+## Configuration
+
+I use a JSON file to do all my project configurations. IT is located in `assets\system.json`. Adopt to your needs. In this directory you find also the `dev-secret.tfvars` file template which you need to fill with your data. It is gitignored, so you should be safe here.
+
+And of course, you'll need to provide an install script for your target image which will run with sudo. It is referenced in the `system.json`file.
+
+## Run
+
+Start the example from within the `example` directory. 
 
 ```
-{
-    "tfc_organization" :"selfscrum",
-    "tfc_description" : "VPC on OTC",
-    "workspace" : "nc_o",
-    "env_stage" : "dev",
-     ...
-    "packer" : {
-            "vpc_name" : "vpc-default",
-            "sg_group" : "default",
-            "source_image_name" : "Standard_Ubuntu_20.04_latest",
-            "source_image_ssh_user_name" : "ubuntu",
-            "target_image_name" : "packer_image",
-            "private_key_file_path" : "/home/desixma/.ssh/",
-            "private_key_file_owner" : "desixma",
-            "install_script_path" : "../../../assets/nomadconsul_install.sh",
-            "wait_before_installing" : 10
-    }
-
-}     
+terraform apply -var-file="../assets/dev-secret.tfvars"
 ```
 
-You might need to adapt paths.
+If successful you should get an image name, and the path to a local private key file. 
+
+You can (and should) destroy the provisioned infrastructure immediately after the build. 
+
+```
+terraform destroy -var-file="../assets/dev-secret.tfvars" -auto-approve
+```
+
+The image will stay, as well as the local private key. You can delete the key, it was only needed for the build by packer.

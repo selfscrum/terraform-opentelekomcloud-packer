@@ -1,3 +1,10 @@
+# main.pkr.hcl
+#
+# this is the core packer configuration.
+# you can use it standalone without the terraform module if you already have a suitable environment in your OTC account.
+# In this case, adopt variables in a separate .tfvars file or in the environment to your needs, and run "packer build ."
+#
+
 source "openstack" "otc_packer_image" {
     identity_endpoint       = var.OTC_identity_endpoint
     domain_name             = var.OTC_domain_name
