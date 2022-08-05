@@ -57,7 +57,7 @@ variable "sg_group" {
 
 variable "source_image_name" {
     type = string
-    default = "Standard_Ubuntu_20.04_latest"
+    default = "Standard_Ubuntu_22.04_latest"
     description = "Name of the OTC source image"
 }
 
@@ -80,6 +80,12 @@ variable "private_key_file_path" {
 variable "private_key_file_owner" {
     type = string
     description = "Local linux user who owns the private key file"
+}
+
+variable "packer_template_directory" {
+    type = string
+    description = "Local path to a packer template directory"
+    default = ""
 }
 
 variable "install_script_path" {

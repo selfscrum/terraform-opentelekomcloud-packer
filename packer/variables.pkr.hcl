@@ -41,7 +41,7 @@ variable "ENV_install_script_path" {
 }
 
 variable "ENV_wait_before_installing" {
-    type = number
+    type = string
     default = env("ENV_wait_before_installing")
 }
 

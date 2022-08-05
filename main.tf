@@ -120,8 +120,8 @@ resource "null_resource" "packer" {
             OTC_username = var.username
             OTC_password = var.password
         }
-        working_dir = "${path.module}/packer"
-        command = "echo $PWD && echo ${var.install_script_path} && packer build ."
+        working_dir = var.packer_template_directory == "" ? "${path.module}/packer" : var.packer_template_directory
+        command = "packer build ."
     }
 }
 
