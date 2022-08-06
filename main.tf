@@ -99,7 +99,8 @@ resource "null_resource" "packer" {
     }
 
     provisioner "local-exec" {
-        environment = {
+        # merge the environment here to support the packer install process
+        environment = merge( var.environment, {
             # packer environment coming from built resources
             TF_floating_ip = opentelekomcloud_networking_floatingip_v2.packer_ip.id
             TF_network = opentelekomcloud_vpc_subnet_v1.packer_subnet.id
@@ -111,6 +112,8 @@ resource "null_resource" "packer" {
             ENV_ssh_username = var.source_image_ssh_user_name
             ENV_install_script_path = var.install_script_path
             ENV_wait_before_installing = var.wait_before_installing
+            # pass in the environment here to support the instance boot-time install process
+            ENV_environment = jsonencode({ for k,v in var.environment : k => v })
             # credentials from secret.tfvars
             OTC_identity_endpoint = var.identity_endpoint
             OTC_domain_name = var.domain_name
@@ -119,7 +122,7 @@ resource "null_resource" "packer" {
             OTC_availability_zone = var.availability_zone
             OTC_username = var.username
             OTC_password = var.password
-        }
+        })
         working_dir = var.packer_template_directory == "" ? "${path.module}/packer" : var.packer_template_directory
         command = "packer build ."
     }

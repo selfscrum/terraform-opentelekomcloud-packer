@@ -84,14 +84,19 @@ variable "private_key_file_owner" {
 
 variable "packer_template_directory" {
     type = string
-    description = "Local path to a packer template directory"
+    description = "Local path to a packer template directory. One of this or install_script_path is required"
     default = ""
+}
+
+variable "environment" {
+    type = map(any)
+    default = {}
 }
 
 variable "install_script_path" {
     type = string
-    default = "./empty.sh"
-    description = "Local path to the install script."
+    default = ""
+    description = "Local path to the install script. One of this or packer_template_directory is required"
 }
 
 variable "wait_before_installing" {

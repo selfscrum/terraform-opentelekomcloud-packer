@@ -54,6 +54,8 @@ OTC_username
 OTC_password
 ```
 
+Besides these standard values, you can enter an own map of environment variables. They will be merged into the build environment, so that you can use them in your install script. Additionally, they can be transported to the instance environment in custom-built packer scripts. In this case, the customer environment is JSON-encoded in the packer variable `ENV_environment`.
+
 ## Run
 
 Start the example from within the `example` directory. 

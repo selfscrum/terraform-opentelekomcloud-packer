@@ -28,14 +28,9 @@ source "openstack" "otc_packer_image" {
 build {
     sources = ["source.openstack.otc_packer_image"]
 
-    provisioner "file" {
-        source = var.ENV_install_script_path != "" ? var.ENV_install_script_path : "./empty.sh"
-        destination = "/tmp/packer_install.sh"
-    }
-
     provisioner "shell" {
         inline = ["sleep ${var.ENV_wait_before_installing}"]
-        execute_command = "chmod +x /tmp/packer_install.sh && echo ${var.OTC_password} | sudo -S sh -c '/tmp/packer_install.sh'"
+        execute_command = "echo '${var.ENV_environment}' > /home/ubuntu/environment.txt"
     }
 
     post-processor "manifest" {
